@@ -1,10 +1,10 @@
-import path, { resolve, join } from "path";
+import path from "path";
 import { Cerbos } from "cerbos";
 import { spawn } from "child_process";
 
-const moduleRoot = resolve(__dirname, "../");
-const dotCerbos = resolve(moduleRoot, ".cerbos");
-const executable = join(dotCerbos, "cerbos");
+const moduleRoot = path.resolve(__dirname, "../");
+const dotCerbos = path.resolve(moduleRoot, ".cerbos");
+const executable = path.join(dotCerbos, "cerbos");
 
 console.log(executable);
 
@@ -16,7 +16,7 @@ async function getLocalClient(): Promise<Cerbos> {
   const cmd = spawn(executable, [
     "server",
     "--config",
-    resolve(dotCerbos, "config.yaml"),
+    path.resolve(dotCerbos, "config.yaml"),
   ]);
 
   cmd.stdout.on("data", (data) => {
