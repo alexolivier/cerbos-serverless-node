@@ -2,10 +2,11 @@
   "name": "cerbos-serverless-node",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/main.js",
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/follow-redirects": "^1.13.1",
     "@typescript-eslint/eslint-plugin": "^5.3.0",
     "@typescript-eslint/parser": "^5.3.0",
     "eslint": "^7.32.0",
@@ -43,5 +44,10 @@
       "eslint",
       "prettier --write"
     ]
+  },
+  "dependencies": {
+    "cerbos": "^0.0.5",
+    "follow-redirects": "^1.14.5",
+    "tar.gz": "^1.0.7"
   }
 }

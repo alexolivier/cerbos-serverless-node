@@ -12,5 +12,8 @@
     "rootDir": "src",
     "incremental": true
   },
+  "include": [
+    "src/**/*"
+  ],
   "exclude": ["dist", "src/__tests__"]
 }
