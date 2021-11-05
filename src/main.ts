@@ -1,4 +1,4 @@
-import { resolve, join } from "path";
+import path, { resolve, join } from "path";
 import { Cerbos } from "cerbos";
 import { spawn } from "child_process";
 
@@ -39,5 +39,8 @@ async function getLocalClient(): Promise<Cerbos> {
 
   return _client;
 }
+
+path.join(__dirname, "../.cerbos/cerbos");
+path.join(__dirname, "../.cerbos/config.yaml");
 
 export default getLocalClient;
