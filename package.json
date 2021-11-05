@@ -3,9 +3,45 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.3.0",
+    "@typescript-eslint/parser": "^5.3.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-eslint-comments": "3.2.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-jest": "25.2.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "4.0.0",
+    "eslint-plugin-promise": "^5.1.1",
+    "jest": "27.3.1",
+    "lint-staged": "11.2.6",
+    "prettier": "2.4.1",
+    "strip-ansi": "6.0.1",
+    "ts-jest": "27.0.7",
+    "typescript": "4.4.4"
+  },
+  "scripts": {
+    "build": "tsc -d",
+    "prepublishOnly": "npm run build",
+    "format": "prettier --write .",
+    "lint": "eslint --cache --fix --ext .ts .",
+    "lint-ci": "eslint --ext .ts .",
+    "test": "jest",
+    "precommit": "lint-staged",
+    "postinstall": "node ./dist/scripts/post-install.js"
+  },
+  "files": [
+    "README.md",
+    "dist"
+  ],
+  "lint-staged": {
+    "*.ts": [
+      "eslint",
+      "prettier --write"
+    ]
+  }
 }
