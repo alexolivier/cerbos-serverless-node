@@ -1,13 +1,26 @@
-import { join } from "path";
-import { mkdir, rmdir, rm, chmod, writeFile } from "fs/promises";
+import path from "path";
+import makeDir from "make-dir";
+// import tempDir from "temp-dir";
+import { promisify } from "util";
 import fs from "fs";
 import { https } from "follow-redirects";
 var targz = require("tar.gz");
 
+const writeFile = promisify(fs.writeFile);
+const rmdir = promisify(fs.rmdir);
+const rm = promisify(fs.rm);
+const chmod = promisify(fs.chmod);
+// const exists = promisify(fs.exists);
+// const readFile = promisify(fs.readFile);
+// const copyFile = promisify(fs.copyFile);
+
 const VERSION = "0.9.1";
 
-const moduleRoot = join(__dirname, "../../../../");
-const dotCerbos = join(moduleRoot, ".cerbos");
+const binaryDir = path.join(__dirname, "../../../", ".cerbos");
+
+const lockFile = path.join(binaryDir, "download-lock");
+
+let createdLockFile = false;
 
 const download = (url: string, dest: string) => {
   return new Promise<void>((resolve, reject) => {
@@ -53,7 +66,7 @@ async function getDownloadUrl() {
 }
 
 async function donwloadAndExtract(url: string, dest: string) {
-  const bundle = join(dest, "engine.tar.gz");
+  const bundle = path.join(dest, "engine.tar.gz");
   await download(url, bundle);
   await targz().extract(bundle, dest);
 }
@@ -72,22 +85,60 @@ storage:
 };
 
 async function main() {
-  console.log("clearing .cerbos");
-  await rmdir(dotCerbos, { recursive: true });
-  console.log(`creating .cerbos: ${dotCerbos}`);
-  await mkdir(dotCerbos);
-  console.log("downloading engine.tar.gz");
-  const downloadUrl = await getDownloadUrl();
-  await donwloadAndExtract(downloadUrl, dotCerbos);
-  console.log("delete tar.gz");
-  await rm(join(dotCerbos, "engine.tar.gz"));
-  console.log("make executable");
-  await chmod(join(dotCerbos, "cerbos"), "755");
-  console.log("make config");
-  await writeFile(
-    join(dotCerbos, "config.yaml"),
-    createConfig([dotCerbos, "../", "policies"].join("/"))
-  );
+  makeDir(binaryDir);
+  if (
+    fs.existsSync(lockFile) &&
+    parseInt(fs.readFileSync(lockFile, "utf-8"), 10) > Date.now() - 20000
+  ) {
+    console.error(`Lock file already exists, skip downlaod of cerbos`);
+  } else {
+    createLockFile();
+    console.log("clearing .cerbos");
+    await rmdir(binaryDir, { recursive: true });
+    console.log("creating .cerbos");
+    await makeDir(binaryDir);
+    console.log("downloading engine.tar.gz");
+    const downloadUrl = await getDownloadUrl();
+    await donwloadAndExtract(downloadUrl, binaryDir);
+    console.log("delete tar.gz");
+    await rm(path.join(binaryDir, "engine.tar.gz"));
+    console.log("make executable");
+    await chmod(path.join(binaryDir, "cerbos"), "755");
+    console.log("make config");
+    await writeFile(
+      path.join(binaryDir, "config.yaml"),
+      createConfig([binaryDir, "../..", "policies"].join("/"))
+    );
+
+    cleanupLockFile();
+  }
 }
 
-main();
+function createLockFile() {
+  createdLockFile = true;
+  fs.writeFileSync(lockFile, Date.now().toString());
+}
+
+function cleanupLockFile() {
+  if (createdLockFile) {
+    try {
+      if (fs.existsSync(lockFile)) {
+        fs.unlinkSync(lockFile);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+}
+
+main().catch((e) => console.error(e));
+
+// if we are in a Now context, ensure that `prisma generate` is in the postinstall hook
+process.on("beforeExit", () => {
+  cleanupLockFile();
+});
+
+process.once("SIGINT", () => {
+  cleanupLockFile();
+  process.exit();
+});

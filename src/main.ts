@@ -40,7 +40,7 @@ async function getLocalClient(): Promise<Cerbos> {
   return _client;
 }
 
-path.join(__dirname, "../.cerbos/cerbos");
-path.join(__dirname, "../.cerbos/config.yaml");
+path.join(__dirname, "../../.cerbos/cerbos");
+path.join(__dirname, "../../.cerbos/config.yaml");
 
 export default getLocalClient;

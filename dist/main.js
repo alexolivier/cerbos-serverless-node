@@ -34,7 +34,7 @@ async function getLocalClient() {
     });
     return _client;
 }
-path_1.default.join(__dirname, "../.cerbos/cerbos");
-path_1.default.join(__dirname, "../.cerbos/config.yaml");
+path_1.default.join(__dirname, "../../.cerbos/cerbos");
+path_1.default.join(__dirname, "../../.cerbos/config.yaml");
 exports.default = getLocalClient;
 //# sourceMappingURL=main.js.map
