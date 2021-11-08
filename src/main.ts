@@ -3,7 +3,7 @@ import { Cerbos } from "cerbos";
 import { spawn } from "child_process";
 
 const moduleRoot = path.resolve(__dirname, "../");
-const dotCerbos = path.resolve(moduleRoot, ".cerbos");
+const dotCerbos = path.resolve(moduleRoot, "../", ".cerbos");
 const executable = path.join(dotCerbos, "cerbos");
 
 console.log(executable);

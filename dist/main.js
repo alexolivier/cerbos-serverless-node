@@ -7,7 +7,7 @@ const path_1 = __importDefault(require("path"));
 const cerbos_1 = require("cerbos");
 const child_process_1 = require("child_process");
 const moduleRoot = path_1.default.resolve(__dirname, "../");
-const dotCerbos = path_1.default.resolve(moduleRoot, ".cerbos");
+const dotCerbos = path_1.default.resolve(moduleRoot, "../", ".cerbos");
 const executable = path_1.default.join(dotCerbos, "cerbos");
 console.log(executable);
 let _client = null;
