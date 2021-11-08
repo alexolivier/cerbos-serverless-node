@@ -6,7 +6,7 @@ var targz = require("tar.gz");
 
 const VERSION = "0.9.1";
 
-const moduleRoot = resolve(__dirname, "../../");
+const moduleRoot = resolve(__dirname, "../../../../");
 const dotCerbos = resolve(moduleRoot, ".cerbos");
 
 const download = (url: string, dest: string) => {
@@ -74,7 +74,7 @@ storage:
 async function main() {
   console.log("clearing .cerbos");
   await rmdir(dotCerbos, { recursive: true });
-  console.log("creating .cerbos");
+  console.log(`creating .cerbos: ${dotCerbos}`);
   await mkdir(dotCerbos);
   console.log("downloading engine.tar.gz");
   const downloadUrl = await getDownloadUrl();
@@ -86,7 +86,7 @@ async function main() {
   console.log("make config");
   await writeFile(
     join(dotCerbos, "config.yaml"),
-    createConfig([dotCerbos, "../../..", "policies"].join("/"))
+    createConfig([dotCerbos, "../", "policies"].join("/"))
   );
 }
 

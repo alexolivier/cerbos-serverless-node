@@ -9,7 +9,7 @@ const fs_1 = __importDefault(require("fs"));
 const follow_redirects_1 = require("follow-redirects");
 var targz = require("tar.gz");
 const VERSION = "0.9.1";
-const moduleRoot = (0, path_1.resolve)(__dirname, "../../");
+const moduleRoot = (0, path_1.resolve)(__dirname, "../../../../");
 const dotCerbos = (0, path_1.resolve)(moduleRoot, ".cerbos");
 const download = (url, dest) => {
     return new Promise((resolve, reject) => {
@@ -66,7 +66,7 @@ storage:
 async function main() {
     console.log("clearing .cerbos");
     await (0, promises_1.rmdir)(dotCerbos, { recursive: true });
-    console.log("creating .cerbos");
+    console.log(`creating .cerbos: ${dotCerbos}`);
     await (0, promises_1.mkdir)(dotCerbos);
     console.log("downloading engine.tar.gz");
     const downloadUrl = await getDownloadUrl();
@@ -76,7 +76,7 @@ async function main() {
     console.log("make executable");
     await (0, promises_1.chmod)((0, path_1.join)(dotCerbos, "cerbos"), "755");
     console.log("make config");
-    await (0, promises_1.writeFile)((0, path_1.join)(dotCerbos, "config.yaml"), createConfig([dotCerbos, "../../..", "policies"].join("/")));
+    await (0, promises_1.writeFile)((0, path_1.join)(dotCerbos, "config.yaml"), createConfig([dotCerbos, "../", "policies"].join("/")));
 }
 main();
 //# sourceMappingURL=post-install.js.map
