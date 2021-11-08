@@ -1,4 +1,4 @@
-import { resolve, join } from "path";
+import { join } from "path";
 import { mkdir, rmdir, rm, chmod, writeFile } from "fs/promises";
 import fs from "fs";
 import { https } from "follow-redirects";
@@ -6,8 +6,8 @@ var targz = require("tar.gz");
 
 const VERSION = "0.9.1";
 
-const moduleRoot = resolve(__dirname, "../../../../");
-const dotCerbos = resolve(moduleRoot, ".cerbos");
+const moduleRoot = join(__dirname, "../../../../");
+const dotCerbos = join(moduleRoot, ".cerbos");
 
 const download = (url: string, dest: string) => {
   return new Promise<void>((resolve, reject) => {
