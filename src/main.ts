@@ -19,11 +19,11 @@ async function getLocalClient(): Promise<Cerbos> {
     {}
   );
 
-  cmd.on("message", (data) => {
+  cmd.stdout?.on("data", (data) => {
     console.log(`stdout: ${data}`);
   });
 
-  cmd.on("error", (data) => {
+  cmd.stderr?.on("data", (data) => {
     console.error(`stderr: ${data}`);
   });
 

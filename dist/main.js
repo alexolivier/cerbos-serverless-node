@@ -12,13 +12,14 @@ const executable = path_1.default.join(dotCerbos, "cerbos");
 const CERBOS_ENDPOINT = "http://localhost:3592";
 let _client = null;
 async function getLocalClient() {
+    var _a, _b;
     if (_client)
         return _client;
     const cmd = (0, cross_spawn_1.default)(executable, ["server", "--config", path_1.default.resolve(dotCerbos, "config.yaml")], {});
-    cmd.on("message", (data) => {
+    (_a = cmd.stdout) === null || _a === void 0 ? void 0 : _a.on("data", (data) => {
         console.log(`stdout: ${data}`);
     });
-    cmd.on("error", (data) => {
+    (_b = cmd.stderr) === null || _b === void 0 ? void 0 : _b.on("data", (data) => {
         console.error(`stderr: ${data}`);
     });
     cmd.on("close", (code) => {
