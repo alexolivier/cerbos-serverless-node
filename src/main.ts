@@ -4,7 +4,8 @@ import { Cerbos } from "cerbos";
 import spawn from "cross-spawn";
 import { cerbosDir } from "./get-paths";
 import http from "http";
-import fs from "fs";
+
+const pdpJson = require("./pdp.json");
 
 const CERBOS_ENDPOINT = "http://localhost:3592";
 
@@ -13,14 +14,10 @@ let _client: Cerbos | null = null;
 async function getLocalClient(): Promise<Cerbos> {
   if (_client) return _client;
 
-  const binaryLocation = JSON.parse(
-    fs.readFileSync(path.join(__dirname, "pdp.json"), "utf-8")
-  );
-
-  console.log("binary location", binaryLocation.pdp);
+  console.log("binary location", pdpJson.pdp);
 
   const cmd = spawn(
-    binaryLocation.pdp,
+    pdpJson.pdp,
     ["server", "--config", path.resolve(cerbosDir(), "config.yaml")],
     {}
   );
