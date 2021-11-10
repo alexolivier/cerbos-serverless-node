@@ -32,6 +32,7 @@ async function donwloadAndExtract(url, destDir) {
     else {
         fs_1.default.writeFileSync(pdpJson, JSON.stringify({ pdp: cerbos }));
     }
+    console.log(pdpJson, require(pdpJson));
     console.log("binary location", executablePath);
 }
 exports.donwloadAndExtract = donwloadAndExtract;
