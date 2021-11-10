@@ -16,11 +16,16 @@ async function getLocalClient() {
     var _a, _b;
     if (_client)
         return _client;
+    console.log(`==== listing ${executablePath}`);
+    fs_1.default.readdirSync(executablePath).forEach((file) => {
+        console.log(file);
+    });
+    console.log("===== end listing");
     console.log(`==== listing ${temp_dir_1.default}`);
     fs_1.default.readdirSync(temp_dir_1.default).forEach((file) => {
         console.log(file);
     });
-    console.log("===== end listing temp-dir");
+    console.log("===== end listing");
     const cmd = (0, cross_spawn_1.default)(path_1.default.join(executablePath, "cerbos"), ["server", "--config", path_1.default.resolve((0, get_paths_1.cerbosDir)(), "config.yaml")], {});
     (_a = cmd.stdout) === null || _a === void 0 ? void 0 : _a.on("data", (data) => {
         console.log(`stdout: ${data}`);

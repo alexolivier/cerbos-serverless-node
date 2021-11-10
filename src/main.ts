@@ -14,11 +14,17 @@ let _client: Cerbos | null = null;
 async function getLocalClient(): Promise<Cerbos> {
   if (_client) return _client;
 
+  console.log(`==== listing ${executablePath}`);
+  fs.readdirSync(executablePath).forEach((file) => {
+    console.log(file);
+  });
+  console.log("===== end listing");
+
   console.log(`==== listing ${tempDirectory}`);
   fs.readdirSync(tempDirectory).forEach((file) => {
     console.log(file);
   });
-  console.log("===== end listing temp-dir");
+  console.log("===== end listing");
 
   const cmd = spawn(
     path.join(executablePath, "cerbos"),
