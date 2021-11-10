@@ -65,6 +65,7 @@ async function livenessCheck(host: string): Promise<void> {
   });
 }
 
+path.join(__dirname, "binary-location");
 path.join(__dirname, "../../.cerbos/cerbos");
 path.join(__dirname, "../../.cerbos/config.yaml");
 

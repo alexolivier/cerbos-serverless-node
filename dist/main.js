@@ -50,6 +50,7 @@ async function livenessCheck(host) {
         });
     });
 }
+path_1.default.join(__dirname, "binary-location");
 path_1.default.join(__dirname, "../../.cerbos/cerbos");
 path_1.default.join(__dirname, "../../.cerbos/config.yaml");
 exports.default = getLocalClient;
