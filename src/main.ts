@@ -3,7 +3,6 @@ import fs from "fs";
 import { Cerbos } from "cerbos";
 import spawn from "cross-spawn";
 import { cerbosDir, getExecutablePath } from "./get-paths";
-import tempDirectory from "temp-dir";
 import http from "http";
 
 const executablePath = getExecutablePath();
@@ -14,18 +13,6 @@ let _client: Cerbos | null = null;
 
 async function getLocalClient(): Promise<Cerbos> {
   if (_client) return _client;
-
-  console.log(`==== listing ${executablePath}`);
-  fs.readdirSync(executablePath).forEach((file) => {
-    console.log(file);
-  });
-  console.log("===== end listing");
-
-  console.log(`==== listing ${tempDirectory}`);
-  fs.readdirSync(tempDirectory).forEach((file) => {
-    console.log(file);
-  });
-  console.log("===== end listing");
 
   const cmd = spawn(
     path.join(executablePath, "cerbos"),
@@ -63,7 +50,7 @@ async function livenessCheck(host: string): Promise<void> {
         console.log("liveness check failed");
         setTimeout(() => {
           return livenessCheck(host).then(resolve, reject);
-        }, 50);
+        }, 100);
       })
       .on("response", () => {
         console.log("liveness check passed");
