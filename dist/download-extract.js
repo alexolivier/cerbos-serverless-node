@@ -23,7 +23,7 @@ async function donwloadAndExtract(url, dest) {
     await chmod(path_1.default.join(dest, "cerbos"), "755");
     const executablePath = (0, get_paths_1.getExecutablePath)();
     if (executablePath !== dest) {
-        await copyFile(path_1.default.join(dest, "cerbos"), executablePath);
+        await copyFile(path_1.default.join(dest, "cerbos"), path_1.default.join(executablePath, "cerbos"));
     }
 }
 exports.donwloadAndExtract = donwloadAndExtract;
