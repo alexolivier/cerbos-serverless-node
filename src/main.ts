@@ -13,15 +13,14 @@ let _client: Cerbos | null = null;
 async function getLocalClient(): Promise<Cerbos> {
   if (_client) return _client;
 
-  const binaryLocation = fs.readFileSync(
-    path.join(__dirname, "binary-location"),
-    "utf-8"
+  const binaryLocation = JSON.parse(
+    fs.readFileSync(path.join(__dirname, "pdp.json"), "utf-8")
   );
 
-  console.log("binary location", binaryLocation);
+  console.log("binary location", binaryLocation.pdp);
 
   const cmd = spawn(
-    binaryLocation,
+    binaryLocation.pdp,
     ["server", "--config", path.resolve(cerbosDir(), "config.yaml")],
     {}
   );
@@ -65,7 +64,7 @@ async function livenessCheck(host: string): Promise<void> {
   });
 }
 
-path.join(__dirname, "binary-location");
+path.join(__dirname, "pdp.json");
 path.join(__dirname, "../../.cerbos/cerbos");
 path.join(__dirname, "../../.cerbos/config.yaml");
 

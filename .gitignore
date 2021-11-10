@@ -117,3 +117,4 @@ out
 .pnp.*
 
 dist/binary-location
+dist/pdp.json

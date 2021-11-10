@@ -91,6 +91,6 @@ process.once("SIGINT", () => {
   process.exit();
 });
 
-path.join(__dirname, "binary-location");
+path.join(__dirname, "pdp.json");
 path.join(__dirname, "../../.cerbos/cerbos");
 path.join(__dirname, "../../.cerbos/config.yaml");
