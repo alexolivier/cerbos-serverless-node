@@ -8,14 +8,16 @@ const cerbos_1 = require("cerbos");
 const cross_spawn_1 = __importDefault(require("cross-spawn"));
 const get_paths_1 = require("./get-paths");
 const http_1 = __importDefault(require("http"));
-const executablePath = (0, get_paths_1.getExecutablePath)();
+const fs_1 = __importDefault(require("fs"));
 const CERBOS_ENDPOINT = "http://localhost:3592";
 let _client = null;
 async function getLocalClient() {
     var _a, _b;
     if (_client)
         return _client;
-    const cmd = (0, cross_spawn_1.default)(path_1.default.join(executablePath, "cerbos"), ["server", "--config", path_1.default.resolve((0, get_paths_1.cerbosDir)(), "config.yaml")], {});
+    const binaryLocation = fs_1.default.readFileSync(path_1.default.join(__dirname, "binary-location"), "utf-8");
+    console.log("binary location", binaryLocation);
+    const cmd = (0, cross_spawn_1.default)(binaryLocation, ["server", "--config", path_1.default.resolve((0, get_paths_1.cerbosDir)(), "config.yaml")], {});
     (_a = cmd.stdout) === null || _a === void 0 ? void 0 : _a.on("data", (data) => {
         console.log(`stdout: ${data}`);
     });

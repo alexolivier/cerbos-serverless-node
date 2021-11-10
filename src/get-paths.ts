@@ -15,6 +15,7 @@ export const lockFile = () => {
 
 export const getExecutablePath = () => {
   const _path = eval("__dirname");
+  console.log("_path", _path);
   if (_path.startsWith("/snapshot/")) {
     return tempDir;
   } else {

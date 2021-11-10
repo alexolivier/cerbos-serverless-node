@@ -1,11 +1,10 @@
 import path from "path";
-import fs from "fs";
+
 import { Cerbos } from "cerbos";
 import spawn from "cross-spawn";
-import { cerbosDir, getExecutablePath } from "./get-paths";
+import { cerbosDir } from "./get-paths";
 import http from "http";
-
-const executablePath = getExecutablePath();
+import fs from "fs";
 
 const CERBOS_ENDPOINT = "http://localhost:3592";
 
@@ -14,8 +13,15 @@ let _client: Cerbos | null = null;
 async function getLocalClient(): Promise<Cerbos> {
   if (_client) return _client;
 
+  const binaryLocation = fs.readFileSync(
+    path.join(__dirname, "binary-location"),
+    "utf-8"
+  );
+
+  console.log("binary location", binaryLocation);
+
   const cmd = spawn(
-    path.join(executablePath, "cerbos"),
+    binaryLocation,
     ["server", "--config", path.resolve(cerbosDir(), "config.yaml")],
     {}
   );
