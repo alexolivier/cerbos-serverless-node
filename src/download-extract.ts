@@ -21,22 +21,13 @@ export async function donwloadAndExtract(url: string, destDir: string) {
   const executablePath = getExecutablePath();
 
   const _path = eval("__dirname");
-  const pdpJson = path.join(_path, "pdp.json");
 
   if (_path.startsWith("/snapshot/")) {
     console.log("moving to tmp");
     const data = await readFile(cerbos);
     await writeFile(path.join(tempDirectory, "cerbos"), data);
     await chmod(path.join(tempDirectory, "cerbos"), "755");
-    fs.writeFileSync(
-      pdpJson,
-      JSON.stringify({ pdp: path.join(tempDirectory, "cerbos") })
-    );
-  } else {
-    fs.writeFileSync(pdpJson, JSON.stringify({ pdp: cerbos }));
   }
-
-  console.log(pdpJson, require(pdpJson));
 
   console.log("binary location", executablePath);
 }

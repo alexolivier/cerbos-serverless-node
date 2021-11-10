@@ -5,26 +5,18 @@ import spawn from "cross-spawn";
 import { cerbosDir } from "./get-paths";
 import http from "http";
 
-const pdpJson = require("./pdp.json");
-
 const CERBOS_ENDPOINT = "http://localhost:3592";
 
-let _client: Cerbos | null = null;
-
 async function getLocalClient(): Promise<Cerbos> {
-  if (_client) return _client;
-
-  console.log("binary location", pdpJson.pdp);
-
   const cmd = spawn(
-    pdpJson.pdp,
+    process.env.NOW_REGION ? "/tmp/cerbos" : "../../.cerbos/cerbos",
     ["server", "--config", path.resolve(cerbosDir(), "config.yaml")],
     {}
   );
 
-  cmd.stdout?.on("data", (data) => {
-    console.log(`stdout: ${data}`);
-  });
+  // cmd.stdout?.on("data", (data) => {
+  //   console.log(`stdout: ${data}`);
+  // });
 
   cmd.stderr?.on("data", (data) => {
     console.error(`stderr: ${data}`);
@@ -34,14 +26,11 @@ async function getLocalClient(): Promise<Cerbos> {
     console.log(`child process exited with code ${code}`);
   });
 
-  // some sort of liveness check
   await livenessCheck(`${CERBOS_ENDPOINT}/_cerbos/health`);
 
-  _client = new Cerbos({
+  return new Cerbos({
     hostname: CERBOS_ENDPOINT, // The Cerbos PDP instance
   });
-
-  return _client;
 }
 
 async function livenessCheck(host: string): Promise<void> {
@@ -61,7 +50,6 @@ async function livenessCheck(host: string): Promise<void> {
   });
 }
 
-path.join(__dirname, "pdp.json");
 path.join(__dirname, "../../.cerbos/cerbos");
 path.join(__dirname, "../../.cerbos/config.yaml");
 
