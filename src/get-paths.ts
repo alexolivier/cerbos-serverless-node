@@ -1,11 +1,11 @@
 import path from "path";
 
 export const cerbosDir = () => {
-  return path.join(__dirname, "../../", ".cerbos");
+  return path.join(__dirname, "../..", ".cerbos");
 };
 
 export const policyDir = () => {
-  return `${cerbosDir()}/../../policies`;
+  return path.join(cerbosDir(), "..", "policies");
 };
 
 export const lockFile = () => {

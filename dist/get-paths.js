@@ -6,11 +6,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getExecutablePath = exports.lockFile = exports.policyDir = exports.cerbosDir = void 0;
 const path_1 = __importDefault(require("path"));
 const cerbosDir = () => {
-    return path_1.default.join(__dirname, "../../", ".cerbos");
+    return path_1.default.join(__dirname, "../..", ".cerbos");
 };
 exports.cerbosDir = cerbosDir;
 const policyDir = () => {
-    return `${(0, exports.cerbosDir)()}/../../policies`;
+    return path_1.default.join((0, exports.cerbosDir)(), "..", "policies");
 };
 exports.policyDir = policyDir;
 const lockFile = () => {

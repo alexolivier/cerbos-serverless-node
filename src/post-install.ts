@@ -5,7 +5,7 @@ import { promisify } from "util";
 import fs from "fs";
 import { createConfig } from "./create-config";
 import { donwloadAndExtract } from "./download-extract";
-import { cerbosDir, lockFile } from "./get-paths";
+import { cerbosDir, lockFile, policyDir } from "./get-paths";
 
 const writeFile = promisify(fs.writeFile);
 const rmdir = promisify(fs.rmdir);
@@ -48,7 +48,7 @@ async function main() {
     console.log("make config");
     await writeFile(
       path.join(binaryDir, "config.yaml"),
-      createConfig([binaryDir, "..", "policies"].join("/"))
+      createConfig(policyDir())
     );
 
     cleanupLockFile();

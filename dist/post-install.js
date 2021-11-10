@@ -41,7 +41,7 @@ async function main() {
         const downloadUrl = await getDownloadUrl();
         await (0, download_extract_1.donwloadAndExtract)(downloadUrl, binaryDir);
         console.log("make config");
-        await writeFile(path_1.default.join(binaryDir, "config.yaml"), (0, create_config_1.createConfig)([binaryDir, "..", "policies"].join("/")));
+        await writeFile(path_1.default.join(binaryDir, "config.yaml"), (0, create_config_1.createConfig)((0, get_paths_1.policyDir)()));
         cleanupLockFile();
     }
 }
