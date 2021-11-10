@@ -1,7 +1,9 @@
 import path from "path";
+import fs from "fs";
 import { Cerbos } from "cerbos";
 import spawn from "cross-spawn";
 import { cerbosDir, getExecutablePath } from "./get-paths";
+import tempDirectory from "temp-dir";
 
 const executablePath = getExecutablePath();
 
@@ -11,6 +13,12 @@ let _client: Cerbos | null = null;
 
 async function getLocalClient(): Promise<Cerbos> {
   if (_client) return _client;
+
+  console.log(`==== listing ${tempDirectory}`);
+  fs.readdirSync(tempDirectory).forEach((file) => {
+    console.log(file);
+  });
+  console.log("===== end listing temp-dir");
 
   const cmd = spawn(
     path.join(executablePath, "cerbos"),
