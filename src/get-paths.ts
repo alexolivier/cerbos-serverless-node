@@ -13,7 +13,8 @@ export const lockFile = () => {
 };
 
 export const getExecutablePath = () => {
-  const _path = __dirname;
+  const _path = eval(__dirname);
+  console.log(`getExecutablePath ${_path}`);
   if (_path.startsWith("/snapshot/")) {
     return "/tmp";
   } else {
