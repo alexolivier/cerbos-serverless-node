@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = __importDefault(require("path"));
 const make_dir_1 = __importDefault(require("make-dir"));
-// import tempDir from "temp-dir";
 const util_1 = require("util");
 const fs_1 = __importDefault(require("fs"));
 const create_config_1 = require("./create-config");

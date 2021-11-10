@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getExecutablePath = exports.lockFile = exports.policyDir = exports.cerbosDir = void 0;
 const path_1 = __importDefault(require("path"));
+const temp_dir_1 = __importDefault(require("temp-dir"));
 const cerbosDir = () => {
     return path_1.default.join(__dirname, "../..", ".cerbos");
 };
@@ -20,8 +21,9 @@ exports.lockFile = lockFile;
 const getExecutablePath = () => {
     const _path = eval("__dirname");
     console.log(`getExecutablePath ${_path}`);
+    console.log(`tempDir ${temp_dir_1.default}`);
     if (_path.startsWith("/snapshot/")) {
-        return "/tmp";
+        return temp_dir_1.default;
     }
     else {
         return (0, exports.cerbosDir)();

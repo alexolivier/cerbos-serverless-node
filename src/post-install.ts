@@ -1,6 +1,5 @@
 import path from "path";
 import makeDir from "make-dir";
-// import tempDir from "temp-dir";
 import { promisify } from "util";
 import fs from "fs";
 import { createConfig } from "./create-config";
