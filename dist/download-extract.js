@@ -20,7 +20,7 @@ async function donwloadAndExtract(url, destDir) {
     console.log("make executable");
     await chmod(cerbos, "755");
     const executablePath = (0, get_paths_1.getExecutablePath)();
-    if (process.env.NOW_REGION) {
+    if (process.env.NOW_REGION || eval("__dirname").startsWith("/snapshot/")) {
         console.log("moving to tmp");
         const data = await readFile(cerbos);
         const tmpLocation = path_1.default.join(temp_dir_1.default, "cerbos");
