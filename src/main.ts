@@ -1,10 +1,9 @@
 import path from "path";
 import { Cerbos } from "cerbos";
 import spawn from "cross-spawn";
+import { cerbosDir, getExecutablePath } from "./get-paths";
 
-const moduleRoot = path.resolve(__dirname, "../");
-const dotCerbos = path.resolve(moduleRoot, "../", ".cerbos");
-const executable = path.join(dotCerbos, "cerbos");
+const executablePath = getExecutablePath();
 
 const CERBOS_ENDPOINT = "http://localhost:3592";
 
@@ -14,8 +13,8 @@ async function getLocalClient(): Promise<Cerbos> {
   if (_client) return _client;
 
   const cmd = spawn(
-    executable,
-    ["server", "--config", path.resolve(dotCerbos, "config.yaml")],
+    path.join(executablePath, "cerbos"),
+    ["server", "--config", path.resolve(cerbosDir(), "config.yaml")],
     {}
   );
 

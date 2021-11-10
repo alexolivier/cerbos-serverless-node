@@ -34,7 +34,7 @@
     "lint-ci": "eslint --ext .ts .",
     "test": "jest",
     "precommit": "lint-staged",
-    "postinstall": "node ./dist/scripts/post-install.js"
+    "postinstall": "node ./dist/post-install.js"
   },
   "files": [
     "README.md",

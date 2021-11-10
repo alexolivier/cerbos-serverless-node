@@ -6,16 +6,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = __importDefault(require("path"));
 const cerbos_1 = require("cerbos");
 const cross_spawn_1 = __importDefault(require("cross-spawn"));
-const moduleRoot = path_1.default.resolve(__dirname, "../");
-const dotCerbos = path_1.default.resolve(moduleRoot, "../", ".cerbos");
-const executable = path_1.default.join(dotCerbos, "cerbos");
+const get_paths_1 = require("./get-paths");
+const executablePath = (0, get_paths_1.getExecutablePath)();
 const CERBOS_ENDPOINT = "http://localhost:3592";
 let _client = null;
 async function getLocalClient() {
     var _a, _b;
     if (_client)
         return _client;
-    const cmd = (0, cross_spawn_1.default)(executable, ["server", "--config", path_1.default.resolve(dotCerbos, "config.yaml")], {});
+    const cmd = (0, cross_spawn_1.default)(path_1.default.join(executablePath, "cerbos"), ["server", "--config", path_1.default.resolve((0, get_paths_1.cerbosDir)(), "config.yaml")], {});
     (_a = cmd.stdout) === null || _a === void 0 ? void 0 : _a.on("data", (data) => {
         console.log(`stdout: ${data}`);
     });
