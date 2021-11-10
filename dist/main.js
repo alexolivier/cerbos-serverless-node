@@ -9,6 +9,7 @@ const cerbos_1 = require("cerbos");
 const cross_spawn_1 = __importDefault(require("cross-spawn"));
 const get_paths_1 = require("./get-paths");
 const temp_dir_1 = __importDefault(require("temp-dir"));
+const http_1 = __importDefault(require("http"));
 const executablePath = (0, get_paths_1.getExecutablePath)();
 const CERBOS_ENDPOINT = "http://localhost:3592";
 let _client = null;
@@ -37,14 +38,28 @@ async function getLocalClient() {
         console.log(`child process exited with code ${code}`);
     });
     // some sort of liveness check
-    // await livenessCheck(CERBOS_ENDPOINT);
+    await livenessCheck(`${CERBOS_ENDPOINT}/_cerbos/health`);
     _client = new cerbos_1.Cerbos({
         hostname: CERBOS_ENDPOINT, // The Cerbos PDP instance
     });
     return _client;
 }
-// async function livenessCheck(host: string): Promise<void> {
-// }
+async function livenessCheck(host) {
+    return new Promise((resolve, reject) => {
+        http_1.default
+            .get(host)
+            .on("error", () => {
+            console.log("liveness check failed");
+            setTimeout(() => {
+                return livenessCheck(host).then(resolve, reject);
+            }, 50);
+        })
+            .on("response", () => {
+            console.log("liveness check passed");
+            resolve();
+        });
+    });
+}
 path_1.default.join(__dirname, "../../.cerbos/cerbos");
 path_1.default.join(__dirname, "../../.cerbos/config.yaml");
 exports.default = getLocalClient;

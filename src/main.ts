@@ -4,6 +4,7 @@ import { Cerbos } from "cerbos";
 import spawn from "cross-spawn";
 import { cerbosDir, getExecutablePath } from "./get-paths";
 import tempDirectory from "temp-dir";
+import http from "http";
 
 const executablePath = getExecutablePath();
 
@@ -45,7 +46,7 @@ async function getLocalClient(): Promise<Cerbos> {
   });
 
   // some sort of liveness check
-  // await livenessCheck(CERBOS_ENDPOINT);
+  await livenessCheck(`${CERBOS_ENDPOINT}/_cerbos/health`);
 
   _client = new Cerbos({
     hostname: CERBOS_ENDPOINT, // The Cerbos PDP instance
@@ -54,9 +55,22 @@ async function getLocalClient(): Promise<Cerbos> {
   return _client;
 }
 
-// async function livenessCheck(host: string): Promise<void> {
-
-// }
+async function livenessCheck(host: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    http
+      .get(host)
+      .on("error", () => {
+        console.log("liveness check failed");
+        setTimeout(() => {
+          return livenessCheck(host).then(resolve, reject);
+        }, 50);
+      })
+      .on("response", () => {
+        console.log("liveness check passed");
+        resolve();
+      });
+  });
+}
 
 path.join(__dirname, "../../.cerbos/cerbos");
 path.join(__dirname, "../../.cerbos/config.yaml");
