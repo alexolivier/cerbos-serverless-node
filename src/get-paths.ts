@@ -5,7 +5,7 @@ export const cerbosDir = () => {
 };
 
 export const policyDir = () => {
-  return path.join(cerbosDir(), "..", "policies");
+  return path.join(cerbosDir(), "../..", "policies");
 };
 
 export const lockFile = () => {

@@ -10,7 +10,7 @@ const cerbosDir = () => {
 };
 exports.cerbosDir = cerbosDir;
 const policyDir = () => {
-    return path_1.default.join((0, exports.cerbosDir)(), "..", "policies");
+    return path_1.default.join((0, exports.cerbosDir)(), "../..", "policies");
 };
 exports.policyDir = policyDir;
 const lockFile = () => {
