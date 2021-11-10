@@ -1,1 +1,1 @@
-export declare function donwloadAndExtract(url: string, dest: string): Promise<void>;
+export declare function donwloadAndExtract(url: string, destDir: string): Promise<void>;

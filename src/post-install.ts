@@ -21,11 +21,19 @@ const _lockFile = lockFile();
 
 let createdLockFile = false;
 
+function toTitleCase(str: string) {
+  return str.replace(/\w\S*/g, function (txt) {
+    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
+}
+
 async function getDownloadUrl() {
   const platform = process.platform;
   const arch = process.arch;
-
-  return `https://github.com/cerbos/cerbos/releases/download/v0.9.1/cerbos_${VERSION}_${platform}_${arch}.tar.gz`;
+  return `https://storage.googleapis.com/cerbos-ao-dev/cerbos_${VERSION}_${toTitleCase(
+    platform
+  )}_${arch}/cerbos`;
+  // return `https://github.com/cerbos/cerbos/releases/download/v0.9.1/cerbos_${VERSION}_${platform}_${arch}.tar.gz`;
 }
 
 async function main() {
@@ -41,8 +49,9 @@ async function main() {
     await rmdir(binaryDir, { recursive: true });
     console.log("creating .cerbos");
     await makeDir(binaryDir);
-    console.log("downloading engine.tar.gz");
+    console.log("downloading cerbos");
     const downloadUrl = await getDownloadUrl();
+    console.log(`downloading from ${downloadUrl}`);
     await donwloadAndExtract(downloadUrl, binaryDir);
     console.log("make config");
     await writeFile(
