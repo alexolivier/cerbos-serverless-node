@@ -15,9 +15,9 @@ async function getLocalClient() {
     var _a, _b;
     if (_client)
         return _client;
-    const binaryLocation = fs_1.default.readFileSync(path_1.default.join(__dirname, "binary-location"), "utf-8");
-    console.log("binary location", binaryLocation);
-    const cmd = (0, cross_spawn_1.default)(binaryLocation, ["server", "--config", path_1.default.resolve((0, get_paths_1.cerbosDir)(), "config.yaml")], {});
+    const binaryLocation = JSON.parse(fs_1.default.readFileSync(path_1.default.join(__dirname, "pdp.json"), "utf-8"));
+    console.log("binary location", binaryLocation.pdp);
+    const cmd = (0, cross_spawn_1.default)(binaryLocation.pdp, ["server", "--config", path_1.default.resolve((0, get_paths_1.cerbosDir)(), "config.yaml")], {});
     (_a = cmd.stdout) === null || _a === void 0 ? void 0 : _a.on("data", (data) => {
         console.log(`stdout: ${data}`);
     });
@@ -50,7 +50,7 @@ async function livenessCheck(host) {
         });
     });
 }
-path_1.default.join(__dirname, "binary-location");
+path_1.default.join(__dirname, "pdp.json");
 path_1.default.join(__dirname, "../../.cerbos/cerbos");
 path_1.default.join(__dirname, "../../.cerbos/config.yaml");
 exports.default = getLocalClient;

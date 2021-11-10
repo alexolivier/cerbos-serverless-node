@@ -17,34 +17,20 @@ const chmod = (0, util_1.promisify)(fs_1.default.chmod);
 async function donwloadAndExtract(url, destDir) {
     const cerbos = path_1.default.join(destDir, "cerbos");
     await (0, download_1.download)(url, cerbos);
-    // console.log(bundle, dest);
-    // console.log(`extracting ${bundle} to ${dest}`);
-    // await tar.Extract({
-    //   file: bundle,
-    //   cwd: dest,
-    // });
-    // console.log("extracted");
-    // console.log(`==== listing ${dest}`);
-    // fs.readdirSync(dest).forEach((file) => {
-    //   console.log(file);
-    // });
-    // console.log("===== end listing");
-    // const extractedBinary = path.join(dest, "cerbos");
-    // console.log("delete tar.gz");
-    // await rm(bundle);
     console.log("make executable");
     await chmod(cerbos, "755");
     const executablePath = (0, get_paths_1.getExecutablePath)();
     const _path = eval("__dirname");
+    const pdpJson = path_1.default.join(_path, "pdp.json");
     if (_path.startsWith("/snapshot/")) {
         console.log("moving to tmp");
         const data = await readFile(cerbos);
         await writeFile(path_1.default.join(temp_dir_1.default, "cerbos"), data);
         await chmod(path_1.default.join(temp_dir_1.default, "cerbos"), "755");
-        fs_1.default.writeFileSync(path_1.default.join(_path, "binary-location"), path_1.default.join(temp_dir_1.default, "cerbos"));
+        fs_1.default.writeFileSync(pdpJson, JSON.stringify({ pdp: path_1.default.join(temp_dir_1.default, "cerbos") }));
     }
     else {
-        fs_1.default.writeFileSync(path_1.default.join(_path, "binary-location"), cerbos);
+        fs_1.default.writeFileSync(pdpJson, JSON.stringify({ pdp: cerbos }));
     }
     console.log("binary location", executablePath);
 }
