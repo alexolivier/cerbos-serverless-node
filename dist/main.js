@@ -8,10 +8,11 @@ const cerbos_1 = require("cerbos");
 const cross_spawn_1 = __importDefault(require("cross-spawn"));
 const get_paths_1 = require("./get-paths");
 const http_1 = __importDefault(require("http"));
+const temp_dir_1 = __importDefault(require("temp-dir"));
 const CERBOS_ENDPOINT = "http://localhost:3592";
 async function getLocalClient() {
     var _a;
-    const cmd = (0, cross_spawn_1.default)(process.env.NOW_REGION ? "/tmp/cerbos" : "../../.cerbos/cerbos", ["server", "--config", path_1.default.resolve((0, get_paths_1.cerbosDir)(), "config.yaml")], {});
+    const cmd = (0, cross_spawn_1.default)(process.env.NOW_REGION ? `${temp_dir_1.default}/cerbos` : "../../.cerbos/cerbos", ["server", "--config", path_1.default.resolve((0, get_paths_1.cerbosDir)(), "config.yaml")], {});
     // cmd.stdout?.on("data", (data) => {
     //   console.log(`stdout: ${data}`);
     // });

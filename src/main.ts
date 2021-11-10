@@ -4,12 +4,13 @@ import { Cerbos } from "cerbos";
 import spawn from "cross-spawn";
 import { cerbosDir } from "./get-paths";
 import http from "http";
+import tempDir from "temp-dir";
 
 const CERBOS_ENDPOINT = "http://localhost:3592";
 
 async function getLocalClient(): Promise<Cerbos> {
   const cmd = spawn(
-    process.env.NOW_REGION ? "/tmp/cerbos" : "../../.cerbos/cerbos",
+    process.env.NOW_REGION ? `${tempDir}/cerbos` : "../../.cerbos/cerbos",
     ["server", "--config", path.resolve(cerbosDir(), "config.yaml")],
     {}
   );

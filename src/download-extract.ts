@@ -20,14 +20,14 @@ export async function donwloadAndExtract(url: string, destDir: string) {
 
   const executablePath = getExecutablePath();
 
-  const _path = eval("__dirname");
-
-  if (_path.startsWith("/snapshot/")) {
+  if (process.env.NOW_REGION) {
     console.log("moving to tmp");
     const data = await readFile(cerbos);
-    await writeFile(path.join(tempDirectory, "cerbos"), data);
-    await chmod(path.join(tempDirectory, "cerbos"), "755");
+    const tmpLocation = path.join(tempDirectory, "cerbos");
+    await writeFile(tmpLocation, data);
+    await chmod(tmpLocation, "755");
+    console.log("binary location", tmpLocation);
+  } else {
+    console.log("binary location", executablePath);
   }
-
-  console.log("binary location", executablePath);
 }
