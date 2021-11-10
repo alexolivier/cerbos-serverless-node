@@ -18,12 +18,12 @@ const lockFile = () => {
 };
 exports.lockFile = lockFile;
 const getExecutablePath = () => {
-    const _path = eval(__dirname);
+    const _path = __dirname;
     if (_path.startsWith("/snapshot/")) {
-        return path_1.default.join("/tmp");
+        return "/tmp";
     }
     else {
-        return path_1.default.join((0, exports.cerbosDir)());
+        return (0, exports.cerbosDir)();
     }
 };
 exports.getExecutablePath = getExecutablePath;
