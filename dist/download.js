@@ -22,14 +22,16 @@ const download = (url, dest) => {
             resolve();
         });
         // check for request error too
-        request.on("error", () => {
+        request.on("error", (e) => {
+            console.error(e);
             // eslint-disable-next-line no-unused-vars
             fs_1.default.unlink(dest, (_) => { });
             reject();
         });
         // eslint-disable-next-line no-unused-vars
-        file.on("error", () => {
+        file.on("error", (e) => {
             // Handle errors
+            console.error(e);
             // eslint-disable-next-line no-unused-vars
             fs_1.default.unlink(dest, (_) => { }); // Delete the file async. (But we don't check the result)
             reject();
