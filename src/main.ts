@@ -3,27 +3,58 @@ import path from "path";
 import { Cerbos } from "cerbos";
 import spawn from "cross-spawn";
 import { cerbosDir } from "./get-paths";
+import child_process from "child_process";
 import http from "http";
-// import tempDir from "temp-dir";
+import fs from "fs";
+import tempDirectory from "temp-dir";
+import { promisify } from "util";
+
+const readFile = promisify(fs.readFile);
+const writeFile = promisify(fs.writeFile);
+const chmod = promisify(fs.chmod);
 
 const CERBOS_ENDPOINT = "http://localhost:3592";
 
 async function getLocalClient(): Promise<Cerbos> {
-  console.log(
-    "spwaning:",
-    [
-      "../../.cerbos/cerbos",
-      "server",
-      "--config",
-      path.join(cerbosDir(), "config.yaml"),
-    ].join(" ")
-  );
+  let cmd: child_process.ChildProcess;
+  if (eval("__dirname").startsWith("/snapshot/")) {
+    console.log("moving to tmp");
+    const data = await readFile("../../.cerbos/cerbos");
+    await writeFile(`${tempDirectory}/cerbos`, data);
+    await chmod(`${tempDirectory}/cerbos`, "755");
+    console.log("moved to tmp");
+    console.log(
+      "spwaning:",
+      [
+        `${tempDirectory}/cerbos`,
+        "server",
+        "--config",
+        path.join(tempDirectory, "config.yaml"),
+      ].join(" ")
+    );
 
-  const cmd = spawn(
-    "../../.cerbos/cerbos",
-    ["server", "--config", path.join(cerbosDir(), "config.yaml")],
-    {}
-  );
+    cmd = spawn(
+      `${tempDirectory}/cerbos`,
+      ["server", "--config", path.join(tempDirectory, "config.yaml")],
+      {}
+    );
+  } else {
+    console.log(
+      "spwaning:",
+      [
+        "../../.cerbos/cerbos",
+        "server",
+        "--config",
+        path.join(cerbosDir(), "config.yaml"),
+      ].join(" ")
+    );
+
+    cmd = spawn(
+      "../../.cerbos/cerbos",
+      ["server", "--config", path.join(cerbosDir(), "config.yaml")],
+      {}
+    );
+  }
 
   cmd.stdout?.on("data", (data) => {
     console.log(`stdout: ${data}`);

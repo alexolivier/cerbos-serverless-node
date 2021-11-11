@@ -8,17 +8,39 @@ const cerbos_1 = require("cerbos");
 const cross_spawn_1 = __importDefault(require("cross-spawn"));
 const get_paths_1 = require("./get-paths");
 const http_1 = __importDefault(require("http"));
-// import tempDir from "temp-dir";
+const fs_1 = __importDefault(require("fs"));
+const temp_dir_1 = __importDefault(require("temp-dir"));
+const util_1 = require("util");
+const readFile = (0, util_1.promisify)(fs_1.default.readFile);
+const writeFile = (0, util_1.promisify)(fs_1.default.writeFile);
+const chmod = (0, util_1.promisify)(fs_1.default.chmod);
 const CERBOS_ENDPOINT = "http://localhost:3592";
 async function getLocalClient() {
     var _a, _b;
-    console.log("spwaning:", [
-        "../../.cerbos/cerbos",
-        "server",
-        "--config",
-        path_1.default.join((0, get_paths_1.cerbosDir)(), "config.yaml"),
-    ].join(" "));
-    const cmd = (0, cross_spawn_1.default)("../../.cerbos/cerbos", ["server", "--config", path_1.default.join((0, get_paths_1.cerbosDir)(), "config.yaml")], {});
+    let cmd;
+    if (eval("__dirname").startsWith("/snapshot/")) {
+        console.log("moving to tmp");
+        const data = await readFile("../../.cerbos/cerbos");
+        await writeFile(`${temp_dir_1.default}/cerbos`, data);
+        await chmod(`${temp_dir_1.default}/cerbos`, "755");
+        console.log("moved to tmp");
+        console.log("spwaning:", [
+            `${temp_dir_1.default}/cerbos`,
+            "server",
+            "--config",
+            path_1.default.join(temp_dir_1.default, "config.yaml"),
+        ].join(" "));
+        cmd = (0, cross_spawn_1.default)(`${temp_dir_1.default}/cerbos`, ["server", "--config", path_1.default.join(temp_dir_1.default, "config.yaml")], {});
+    }
+    else {
+        console.log("spwaning:", [
+            "../../.cerbos/cerbos",
+            "server",
+            "--config",
+            path_1.default.join((0, get_paths_1.cerbosDir)(), "config.yaml"),
+        ].join(" "));
+        cmd = (0, cross_spawn_1.default)("../../.cerbos/cerbos", ["server", "--config", path_1.default.join((0, get_paths_1.cerbosDir)(), "config.yaml")], {});
+    }
     (_a = cmd.stdout) === null || _a === void 0 ? void 0 : _a.on("data", (data) => {
         console.log(`stdout: ${data}`);
     });
