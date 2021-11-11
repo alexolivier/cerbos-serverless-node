@@ -22,6 +22,10 @@ async function getLocalClient(): Promise<Cerbos> {
     const data = await readFile("../../.cerbos/cerbos");
     await writeFile(`/tmp/cerbos`, data);
     await chmod(`/tmp/cerbos`, "755");
+
+    const configData = await readFile("../../.cerbos/config.yaml");
+    await writeFile(`/tmp/config.yaml`, configData);
+
     console.log("moved to tmp");
     console.log(
       "spwaning:",
