@@ -26,6 +26,11 @@ async function getLocalClient() {
     fs_1.default.readdirSync(temp_dir_1.default).forEach((file) => {
         console.log(file);
     });
+    console.log(`=== files: ../../`);
+    fs_1.default.readdirSync("../../").forEach((file) => {
+        console.log(file);
+    });
+    console.log("===");
     console.log(`=== files: ../../.cerbos`);
     fs_1.default.readdirSync("../../.cerbos").forEach((file) => {
         console.log(file);
@@ -87,6 +92,7 @@ async function livenessCheck(host) {
     });
 }
 path_1.default.join(__dirname, "../../../policies");
+path_1.default.join(__dirname, "../../.cerbos/cerbos");
 path_1.default.join(__dirname, "../../.cerbos/config.yaml");
 exports.default = getLocalClient;
 //# sourceMappingURL=main.js.map

@@ -27,6 +27,12 @@ async function getLocalClient(): Promise<Cerbos> {
     console.log(file);
   });
 
+  console.log(`=== files: ../../`);
+  fs.readdirSync("../../").forEach((file) => {
+    console.log(file);
+  });
+  console.log("===");
+
   console.log(`=== files: ../../.cerbos`);
   fs.readdirSync("../../.cerbos").forEach((file) => {
     console.log(file);
@@ -118,6 +124,7 @@ async function livenessCheck(host: string): Promise<void> {
 }
 
 path.join(__dirname, "../../../policies");
+path.join(__dirname, "../../.cerbos/cerbos");
 path.join(__dirname, "../../.cerbos/config.yaml");
 
 export default getLocalClient;
