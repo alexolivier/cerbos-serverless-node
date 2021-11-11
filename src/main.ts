@@ -14,7 +14,7 @@ async function getLocalClient(): Promise<Cerbos> {
       "server",
       "--config",
       "./node_modules/.cerbos/config.yaml",
-      `--set=storage.disk.directory=../../policies`,
+      `--set=storage.disk.directory=./policies`,
     ].join(" "),
     {
       stdio: "inherit",
@@ -28,7 +28,7 @@ async function getLocalClient(): Promise<Cerbos> {
       "server",
       "--config",
       "./node_modules/.cerbos/config.yaml",
-      `--set=storage.disk.directory=../../policies`,
+      `--set=storage.disk.directory=./policies`,
     ],
     {
       stdio: "inherit",
