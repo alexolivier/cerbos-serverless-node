@@ -9,8 +9,8 @@ const cross_spawn_1 = __importDefault(require("cross-spawn"));
 const get_paths_1 = require("./get-paths");
 const http_1 = __importDefault(require("http"));
 const fs_1 = __importDefault(require("fs"));
-const temp_dir_1 = __importDefault(require("temp-dir"));
 const util_1 = require("util");
+const create_config_1 = require("./create-config");
 const readFile = (0, util_1.promisify)(fs_1.default.readFile);
 const writeFile = (0, util_1.promisify)(fs_1.default.writeFile);
 const chmod = (0, util_1.promisify)(fs_1.default.chmod);
@@ -23,11 +23,10 @@ async function getLocalClient() {
         const data = await readFile("../../.cerbos/cerbos");
         await writeFile(`/tmp/cerbos`, data);
         await chmod(`/tmp/cerbos`, "755");
-        const configData = await readFile("../../.cerbos/config.yaml");
-        await writeFile(`/tmp/config.yaml`, configData);
+        await writeFile(`/tmp/config.yaml`, (0, create_config_1.createConfig)(path_1.default.join(__dirname, "../../../policies")));
         console.log("moved to tmp");
         console.log("spwaning:", [`/tmp/cerbos`, "server", "--config", "/tmp/config.yaml"].join(" "));
-        cmd = (0, cross_spawn_1.default)(`${temp_dir_1.default}/cerbos`, ["server", "--config", "/tmp/config.yaml"], {});
+        cmd = (0, cross_spawn_1.default)(`/tmp/cerbos`, ["server", "--config", "/tmp/config.yaml"], {});
     }
     else {
         console.log("spwaning:", [

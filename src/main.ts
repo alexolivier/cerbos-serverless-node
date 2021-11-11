@@ -8,6 +8,7 @@ import http from "http";
 import fs from "fs";
 import tempDirectory from "temp-dir";
 import { promisify } from "util";
+import { createConfig } from "./create-config";
 
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
@@ -23,8 +24,10 @@ async function getLocalClient(): Promise<Cerbos> {
     await writeFile(`/tmp/cerbos`, data);
     await chmod(`/tmp/cerbos`, "755");
 
-    const configData = await readFile("../../.cerbos/config.yaml");
-    await writeFile(`/tmp/config.yaml`, configData);
+    await writeFile(
+      `/tmp/config.yaml`,
+      createConfig(path.join(__dirname, "../../../policies"))
+    );
 
     console.log("moved to tmp");
     console.log(
@@ -32,11 +35,7 @@ async function getLocalClient(): Promise<Cerbos> {
       [`/tmp/cerbos`, "server", "--config", "/tmp/config.yaml"].join(" ")
     );
 
-    cmd = spawn(
-      `${tempDirectory}/cerbos`,
-      ["server", "--config", "/tmp/config.yaml"],
-      {}
-    );
+    cmd = spawn(`/tmp/cerbos`, ["server", "--config", "/tmp/config.yaml"], {});
   } else {
     console.log(
       "spwaning:",
