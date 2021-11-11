@@ -18,6 +18,20 @@ const CERBOS_ENDPOINT = "http://localhost:3592";
 
 async function getLocalClient(): Promise<Cerbos> {
   let cmd: child_process.ChildProcess;
+  console.log("__dirname", __dirname);
+  console.log("eval(__dirname)", eval(__dirname));
+  console.log("process.cwd()", process.cwd());
+
+  console.log(`=== files: ${tempDirectory}`);
+  fs.readdirSync(tempDirectory).forEach((file) => {
+    console.log(file);
+  });
+
+  console.log(`=== files: ../../.cerbos`);
+  fs.readdirSync("../../.cerbos").forEach((file) => {
+    console.log(file);
+  });
+  console.log("===");
 
   if (eval("__dirname").startsWith("/snapshot/")) {
     console.log(`moving to ${tempDirectory}`);

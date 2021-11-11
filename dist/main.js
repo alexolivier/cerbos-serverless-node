@@ -19,6 +19,18 @@ const CERBOS_ENDPOINT = "http://localhost:3592";
 async function getLocalClient() {
     var _a, _b;
     let cmd;
+    console.log("__dirname", __dirname);
+    console.log("eval(__dirname)", eval(__dirname));
+    console.log("process.cwd()", process.cwd());
+    console.log(`=== files: ${temp_dir_1.default}`);
+    fs_1.default.readdirSync(temp_dir_1.default).forEach((file) => {
+        console.log(file);
+    });
+    console.log(`=== files: ../../.cerbos`);
+    fs_1.default.readdirSync("../../.cerbos").forEach((file) => {
+        console.log(file);
+    });
+    console.log("===");
     if (eval("__dirname").startsWith("/snapshot/")) {
         console.log(`moving to ${temp_dir_1.default}`);
         const data = await readFile("../../.cerbos/cerbos");
