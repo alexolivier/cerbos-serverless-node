@@ -14,9 +14,13 @@ async function getLocalClient() {
         "server",
         "--config",
         path_1.default.join(__dirname, "../../.cerbos/config.yaml"),
-    ].join(" "));
+    ].join(" "), {
+        stdio: "inherit",
+        cwd: process.cwd(),
+    });
     const cmd = (0, cross_spawn_1.default)(path_1.default.join(__dirname, "../../.cerbos/cerbos"), ["server", "--config", path_1.default.join(__dirname, "../../.cerbos/config.yaml")], {
         stdio: "inherit",
+        cwd: process.cwd(),
     });
     cmd.on("close", (code) => {
         console.log(new Date(), `child process exited with code ${code}`);

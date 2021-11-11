@@ -14,7 +14,11 @@ async function getLocalClient(): Promise<Cerbos> {
       "server",
       "--config",
       path.join(__dirname, "../../.cerbos/config.yaml"),
-    ].join(" ")
+    ].join(" "),
+    {
+      stdio: "inherit",
+      cwd: process.cwd(),
+    }
   );
 
   const cmd = spawn(
@@ -22,6 +26,7 @@ async function getLocalClient(): Promise<Cerbos> {
     ["server", "--config", path.join(__dirname, "../../.cerbos/config.yaml")],
     {
       stdio: "inherit",
+      cwd: process.cwd(),
     }
   );
 
