@@ -65,7 +65,7 @@ async function livenessCheck(host: string): Promise<void> {
     http
       .get(host)
       .on("error", () => {
-        console.log("liveness check failed");
+        // console.log("liveness check failed");
         setTimeout(() => {
           return livenessCheck(host).then(resolve, reject);
         }, 100);
