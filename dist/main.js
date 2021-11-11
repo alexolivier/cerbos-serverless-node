@@ -21,16 +21,11 @@ async function getLocalClient() {
     if (eval("__dirname").startsWith("/snapshot/")) {
         console.log("moving to tmp");
         const data = await readFile("../../.cerbos/cerbos");
-        await writeFile(`${temp_dir_1.default}/cerbos`, data);
-        await chmod(`${temp_dir_1.default}/cerbos`, "755");
+        await writeFile(`/tmp/cerbos`, data);
+        await chmod(`/tmp/cerbos`, "755");
         console.log("moved to tmp");
-        console.log("spwaning:", [
-            `${temp_dir_1.default}/cerbos`,
-            "server",
-            "--config",
-            path_1.default.join(temp_dir_1.default, "config.yaml"),
-        ].join(" "));
-        cmd = (0, cross_spawn_1.default)(`${temp_dir_1.default}/cerbos`, ["server", "--config", path_1.default.join(temp_dir_1.default, "config.yaml")], {});
+        console.log("spwaning:", [`/tmp/cerbos`, "server", "--config", "/tmp/config.yaml"].join(" "));
+        cmd = (0, cross_spawn_1.default)(`${temp_dir_1.default}/cerbos`, ["server", "--config", "/tmp/config.yaml"], {});
     }
     else {
         console.log("spwaning:", [
