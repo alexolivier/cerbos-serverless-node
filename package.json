@@ -47,6 +47,13 @@
       "prettier --write"
     ]
   },
+  "pkg": {
+    "assets": [
+      "../.cerbos",
+      "../../policies"
+    ],
+    "outputPath": "dist"
+  },
   "dependencies": {
     "cerbos": "^0.0.5",
     "cross-spawn": "^7.0.3",
