@@ -3,18 +3,32 @@ import { Cerbos } from "cerbos";
 import spawn from "cross-spawn";
 import http from "http";
 
+import fs from "fs";
+import tempDirectory from "temp-dir";
+
 const CERBOS_ENDPOINT = "http://localhost:3592";
 
 async function getLocalClient(): Promise<Cerbos> {
+  console.log(new Date(), "copying binary");
+
+  const binaryData = fs.readFileSync("./node_modules/.cerbos/cerbos");
+  fs.writeFileSync(`${tempDirectory}/cerbos`, binaryData);
+  fs.chmodSync(`${tempDirectory}/cerbos`, "755");
+
+  const configData = fs.readFileSync("./node_modules/.cerbos/config.yaml");
+  fs.writeFileSync(`${tempDirectory}/config.yaml`, configData);
+
+  console.log(new Date(), "copying binary done");
+
   console.log(
     new Date(),
     "spwaning:",
     [
-      "./node_modules/.cerbos/cerbos",
+      `${tempDirectory}/cerbos`,
       "server",
       "--config",
-      "./node_modules/.cerbos/config.yaml",
-      `--set=storage.disk.directory=./policies`,
+      `${tempDirectory}/config.yaml`,
+      `--set=storage.disk.directory=${process.cwd()}/policies`,
     ].join(" "),
     {
       stdio: "inherit",
@@ -23,12 +37,13 @@ async function getLocalClient(): Promise<Cerbos> {
   );
 
   const cmd = spawn(
-    "./node_modules/.cerbos/cerbos",
+    `${tempDirectory}/cerbos`,
     [
+      `${tempDirectory}/cerbos`,
       "server",
       "--config",
-      "./node_modules/.cerbos/config.yaml",
-      `--set=storage.disk.directory=./policies`,
+      `${tempDirectory}/config.yaml`,
+      `--set=storage.disk.directory=${process.cwd()}/policies`,
     ],
     {
       stdio: "inherit",

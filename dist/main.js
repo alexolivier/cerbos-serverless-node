@@ -7,23 +7,33 @@ const path_1 = __importDefault(require("path"));
 const cerbos_1 = require("cerbos");
 const cross_spawn_1 = __importDefault(require("cross-spawn"));
 const http_1 = __importDefault(require("http"));
+const fs_1 = __importDefault(require("fs"));
+const temp_dir_1 = __importDefault(require("temp-dir"));
 const CERBOS_ENDPOINT = "http://localhost:3592";
 async function getLocalClient() {
+    console.log(new Date(), "copying binary");
+    const binaryData = fs_1.default.readFileSync("./node_modules/.cerbos/cerbos");
+    fs_1.default.writeFileSync(`${temp_dir_1.default}/cerbos`, binaryData);
+    fs_1.default.chmodSync(`${temp_dir_1.default}/cerbos`, "755");
+    const configData = fs_1.default.readFileSync("./node_modules/.cerbos/config.yaml");
+    fs_1.default.writeFileSync(`${temp_dir_1.default}/config.yaml`, configData);
+    console.log(new Date(), "copying binary done");
     console.log(new Date(), "spwaning:", [
-        "./node_modules/.cerbos/cerbos",
+        `${temp_dir_1.default}/cerbos`,
         "server",
         "--config",
-        "./node_modules/.cerbos/config.yaml",
-        `--set=storage.disk.directory=./policies`,
+        `${temp_dir_1.default}/config.yaml`,
+        `--set=storage.disk.directory=${process.cwd()}/policies`,
     ].join(" "), {
         stdio: "inherit",
         cwd: process.cwd(),
     });
-    const cmd = (0, cross_spawn_1.default)("./node_modules/.cerbos/cerbos", [
+    const cmd = (0, cross_spawn_1.default)(`${temp_dir_1.default}/cerbos`, [
+        `${temp_dir_1.default}/cerbos`,
         "server",
         "--config",
-        "./node_modules/.cerbos/config.yaml",
-        `--set=storage.disk.directory=./policies`,
+        `${temp_dir_1.default}/config.yaml`,
+        `--set=storage.disk.directory=${process.cwd()}/policies`,
     ], {
         stdio: "inherit",
         cwd: process.cwd(),
