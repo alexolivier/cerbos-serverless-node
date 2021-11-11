@@ -29,7 +29,6 @@ async function getLocalClient() {
         cwd: process.cwd(),
     });
     const cmd = (0, cross_spawn_1.default)(`${temp_dir_1.default}/cerbos`, [
-        `${temp_dir_1.default}/cerbos`,
         "server",
         "--config",
         `${temp_dir_1.default}/config.yaml`,

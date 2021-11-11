@@ -39,7 +39,6 @@ async function getLocalClient(): Promise<Cerbos> {
   const cmd = spawn(
     `${tempDirectory}/cerbos`,
     [
-      `${tempDirectory}/cerbos`,
       "server",
       "--config",
       `${tempDirectory}/config.yaml`,
