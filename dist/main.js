@@ -10,15 +10,21 @@ const http_1 = __importDefault(require("http"));
 const CERBOS_ENDPOINT = "http://localhost:3592";
 async function getLocalClient() {
     console.log(new Date(), "spwaning:", [
-        path_1.default.join(__dirname, "../../.cerbos/cerbos"),
+        "./node_modules/.cerbos/cerbos",
         "server",
         "--config",
-        path_1.default.join(__dirname, "../../.cerbos/config.yaml"),
+        "./node_modules/.cerbos/config.yaml",
+        `--set=storage.disk.directory=../../policies`,
     ].join(" "), {
         stdio: "inherit",
         cwd: process.cwd(),
     });
-    const cmd = (0, cross_spawn_1.default)(path_1.default.join(__dirname, "../../.cerbos/cerbos"), ["server", "--config", path_1.default.join(__dirname, "../../.cerbos/config.yaml")], {
+    const cmd = (0, cross_spawn_1.default)("./node_modules/.cerbos/cerbos", [
+        "server",
+        "--config",
+        "./node_modules/.cerbos/config.yaml",
+        `--set=storage.disk.directory=../../policies`,
+    ], {
         stdio: "inherit",
         cwd: process.cwd(),
     });

@@ -10,10 +10,11 @@ async function getLocalClient(): Promise<Cerbos> {
     new Date(),
     "spwaning:",
     [
-      path.join(__dirname, "../../.cerbos/cerbos"),
+      "./node_modules/.cerbos/cerbos",
       "server",
       "--config",
-      path.join(__dirname, "../../.cerbos/config.yaml"),
+      "./node_modules/.cerbos/config.yaml",
+      `--set=storage.disk.directory=../../policies`,
     ].join(" "),
     {
       stdio: "inherit",
@@ -22,8 +23,13 @@ async function getLocalClient(): Promise<Cerbos> {
   );
 
   const cmd = spawn(
-    path.join(__dirname, "../../.cerbos/cerbos"),
-    ["server", "--config", path.join(__dirname, "../../.cerbos/config.yaml")],
+    "./node_modules/.cerbos/cerbos",
+    [
+      "server",
+      "--config",
+      "./node_modules/.cerbos/config.yaml",
+      `--set=storage.disk.directory=../../policies`,
+    ],
     {
       stdio: "inherit",
       cwd: process.cwd(),
