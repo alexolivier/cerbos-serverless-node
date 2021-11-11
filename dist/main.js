@@ -24,7 +24,7 @@ async function getLocalClient() {
         console.log(file);
     });
     console.log("===");
-    console.log("spwaning:", [
+    console.log(new Date(), "spwaning:", [
         `${process.cwd()}/node_modules/.cerbos/cerbos`,
         "server",
         "--config",
@@ -32,13 +32,13 @@ async function getLocalClient() {
     ].join(" "));
     const cmd = (0, cross_spawn_1.default)(`${process.cwd()}/node_modules/.cerbos/cerbos`, ["server", "--config", `${process.cwd()}/node_modules/.cerbos/config.yaml`], {});
     (_a = cmd.stdout) === null || _a === void 0 ? void 0 : _a.on("data", (data) => {
-        console.log(`stdout: ${data}`);
+        console.log(new Date(), `stdout: ${data}`);
     });
     (_b = cmd.stderr) === null || _b === void 0 ? void 0 : _b.on("data", (data) => {
-        console.error(`stderr: ${data}`);
+        console.error(new Date(), `stderr: ${data}`);
     });
     cmd.on("close", (code) => {
-        console.log(`child process exited with code ${code}`);
+        console.log(new Date(), `child process exited with code ${code}`);
     });
     await livenessCheck(`${CERBOS_ENDPOINT}/_cerbos/health`);
     return new cerbos_1.Cerbos({
@@ -56,7 +56,7 @@ async function livenessCheck(host) {
             }, 100);
         })
             .on("response", () => {
-            console.log("liveness check passed");
+            console.log(new Date(), "liveness check passed");
             resolve();
         });
     });

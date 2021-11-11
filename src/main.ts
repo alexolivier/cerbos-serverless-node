@@ -26,6 +26,7 @@ async function getLocalClient(): Promise<Cerbos> {
   console.log("===");
 
   console.log(
+    new Date(),
     "spwaning:",
     [
       `${process.cwd()}/node_modules/.cerbos/cerbos`,
@@ -42,15 +43,15 @@ async function getLocalClient(): Promise<Cerbos> {
   );
 
   cmd.stdout?.on("data", (data) => {
-    console.log(`stdout: ${data}`);
+    console.log(new Date(), `stdout: ${data}`);
   });
 
   cmd.stderr?.on("data", (data) => {
-    console.error(`stderr: ${data}`);
+    console.error(new Date(), `stderr: ${data}`);
   });
 
   cmd.on("close", (code) => {
-    console.log(`child process exited with code ${code}`);
+    console.log(new Date(), `child process exited with code ${code}`);
   });
 
   await livenessCheck(`${CERBOS_ENDPOINT}/_cerbos/health`);
@@ -71,7 +72,7 @@ async function livenessCheck(host: string): Promise<void> {
         }, 100);
       })
       .on("response", () => {
-        console.log("liveness check passed");
+        console.log(new Date(), "liveness check passed");
         resolve();
       });
   });
