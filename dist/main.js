@@ -23,7 +23,7 @@ async function getLocalClient() {
         const data = await readFile("../../.cerbos/cerbos");
         await writeFile(`/tmp/cerbos`, data);
         await chmod(`/tmp/cerbos`, "755");
-        await writeFile(`/tmp/config.yaml`, (0, create_config_1.createConfig)(path_1.default.join(__dirname, "../../../policies")));
+        await writeFile(`/tmp/config.yaml`, (0, create_config_1.createConfig)(path_1.default.resolve(__dirname, "../../../policies")));
         console.log("moved to tmp");
         console.log("spwaning:", [`/tmp/cerbos`, "server", "--config", "/tmp/config.yaml"].join(" "));
         cmd = (0, cross_spawn_1.default)(`/tmp/cerbos`, ["server", "--config", "/tmp/config.yaml"], {});

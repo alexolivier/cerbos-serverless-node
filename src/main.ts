@@ -6,7 +6,6 @@ import { cerbosDir } from "./get-paths";
 import child_process from "child_process";
 import http from "http";
 import fs from "fs";
-import tempDirectory from "temp-dir";
 import { promisify } from "util";
 import { createConfig } from "./create-config";
 
@@ -18,6 +17,7 @@ const CERBOS_ENDPOINT = "http://localhost:3592";
 
 async function getLocalClient(): Promise<Cerbos> {
   let cmd: child_process.ChildProcess;
+
   if (eval("__dirname").startsWith("/snapshot/")) {
     console.log("moving to tmp");
     const data = await readFile("../../.cerbos/cerbos");
@@ -26,7 +26,7 @@ async function getLocalClient(): Promise<Cerbos> {
 
     await writeFile(
       `/tmp/config.yaml`,
-      createConfig(path.join(__dirname, "../../../policies"))
+      createConfig(path.resolve(__dirname, "../../../policies"))
     );
 
     console.log("moved to tmp");
