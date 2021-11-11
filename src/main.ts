@@ -26,7 +26,7 @@ async function getLocalClient(): Promise<Cerbos> {
 
     await writeFile(
       `/tmp/config.yaml`,
-      createConfig(path.resolve(__dirname, "../../../policies"))
+      createConfig(path.join(process.cwd(), "../../../policies"))
     );
 
     console.log("moved to tmp");
