@@ -8,6 +8,7 @@ import http from "http";
 import fs from "fs";
 import { promisify } from "util";
 import { createConfig } from "./create-config";
+import tempDirectory from "temp-dir";
 
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
@@ -19,23 +20,34 @@ async function getLocalClient(): Promise<Cerbos> {
   let cmd: child_process.ChildProcess;
 
   if (eval("__dirname").startsWith("/snapshot/")) {
-    console.log("moving to tmp");
+    console.log(`moving to ${tempDirectory}`);
     const data = await readFile("../../.cerbos/cerbos");
-    await writeFile(`/tmp/cerbos`, data);
-    await chmod(`/tmp/cerbos`, "755");
+    await writeFile(`${tempDirectory}/cerbos`, data);
+    await chmod(`${tempDirectory}/cerbos`, "755");
+
+    console.log("policy dir ", path.join(process.cwd(), "../../../policies"));
 
     await writeFile(
-      `/tmp/config.yaml`,
+      `${tempDirectory}/config.yaml`,
       createConfig(path.join(process.cwd(), "../../../policies"))
     );
 
-    console.log("moved to tmp");
+    console.log(`moved to ${tempDirectory}`);
     console.log(
       "spwaning:",
-      [`/tmp/cerbos`, "server", "--config", "/tmp/config.yaml"].join(" ")
+      [
+        `${tempDirectory}/cerbos`,
+        "server",
+        "--config",
+        `${tempDirectory}/config.yaml}`,
+      ].join(" ")
     );
 
-    cmd = spawn(`/tmp/cerbos`, ["server", "--config", "/tmp/config.yaml"], {});
+    cmd = spawn(
+      `${tempDirectory}/cerbos`,
+      ["server", "--config", `${tempDirectory}/config.yaml`],
+      {}
+    );
   } else {
     console.log(
       "spwaning:",

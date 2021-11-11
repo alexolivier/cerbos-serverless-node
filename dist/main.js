@@ -11,6 +11,7 @@ const http_1 = __importDefault(require("http"));
 const fs_1 = __importDefault(require("fs"));
 const util_1 = require("util");
 const create_config_1 = require("./create-config");
+const temp_dir_1 = __importDefault(require("temp-dir"));
 const readFile = (0, util_1.promisify)(fs_1.default.readFile);
 const writeFile = (0, util_1.promisify)(fs_1.default.writeFile);
 const chmod = (0, util_1.promisify)(fs_1.default.chmod);
@@ -19,14 +20,20 @@ async function getLocalClient() {
     var _a, _b;
     let cmd;
     if (eval("__dirname").startsWith("/snapshot/")) {
-        console.log("moving to tmp");
+        console.log(`moving to ${temp_dir_1.default}`);
         const data = await readFile("../../.cerbos/cerbos");
-        await writeFile(`/tmp/cerbos`, data);
-        await chmod(`/tmp/cerbos`, "755");
-        await writeFile(`/tmp/config.yaml`, (0, create_config_1.createConfig)(path_1.default.join(process.cwd(), "../../../policies")));
-        console.log("moved to tmp");
-        console.log("spwaning:", [`/tmp/cerbos`, "server", "--config", "/tmp/config.yaml"].join(" "));
-        cmd = (0, cross_spawn_1.default)(`/tmp/cerbos`, ["server", "--config", "/tmp/config.yaml"], {});
+        await writeFile(`${temp_dir_1.default}/cerbos`, data);
+        await chmod(`${temp_dir_1.default}/cerbos`, "755");
+        console.log("policy dir ", path_1.default.join(process.cwd(), "../../../policies"));
+        await writeFile(`${temp_dir_1.default}/config.yaml`, (0, create_config_1.createConfig)(path_1.default.join(process.cwd(), "../../../policies")));
+        console.log(`moved to ${temp_dir_1.default}`);
+        console.log("spwaning:", [
+            `${temp_dir_1.default}/cerbos`,
+            "server",
+            "--config",
+            `${temp_dir_1.default}/config.yaml}`,
+        ].join(" "));
+        cmd = (0, cross_spawn_1.default)(`${temp_dir_1.default}/cerbos`, ["server", "--config", `${temp_dir_1.default}/config.yaml`], {});
     }
     else {
         console.log("spwaning:", [
