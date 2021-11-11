@@ -9,7 +9,7 @@ const cross_spawn_1 = __importDefault(require("cross-spawn"));
 const http_1 = __importDefault(require("http"));
 const CERBOS_ENDPOINT = "http://localhost:3592";
 async function getLocalClient() {
-    console.log("spwaning:", [
+    console.log(new Date(), "spwaning:", [
         path_1.default.join(__dirname, "../../.cerbos/cerbos"),
         "server",
         "--config",
@@ -19,7 +19,7 @@ async function getLocalClient() {
         stdio: "inherit",
     });
     cmd.on("close", (code) => {
-        console.log(`child process exited with code ${code}`);
+        console.log(new Date(), `child process exited with code ${code}`);
     });
     await livenessCheck(`${CERBOS_ENDPOINT}/_cerbos/health`);
     return new cerbos_1.Cerbos({
@@ -31,13 +31,13 @@ async function livenessCheck(host) {
         http_1.default
             .get(host)
             .on("error", () => {
-            console.log("liveness check failed");
+            // console.log("liveness check failed");
             setTimeout(() => {
                 return livenessCheck(host).then(resolve, reject);
             }, 100);
         })
             .on("response", () => {
-            console.log("liveness check passed");
+            console.log(new Date(), "liveness check passed");
             resolve();
         });
     });

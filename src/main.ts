@@ -7,6 +7,7 @@ const CERBOS_ENDPOINT = "http://localhost:3592";
 
 async function getLocalClient(): Promise<Cerbos> {
   console.log(
+    new Date(),
     "spwaning:",
     [
       path.join(__dirname, "../../.cerbos/cerbos"),
@@ -25,7 +26,7 @@ async function getLocalClient(): Promise<Cerbos> {
   );
 
   cmd.on("close", (code) => {
-    console.log(`child process exited with code ${code}`);
+    console.log(new Date(), `child process exited with code ${code}`);
   });
 
   await livenessCheck(`${CERBOS_ENDPOINT}/_cerbos/health`);
@@ -40,13 +41,13 @@ async function livenessCheck(host: string): Promise<void> {
     http
       .get(host)
       .on("error", () => {
-        console.log("liveness check failed");
+        // console.log("liveness check failed");
         setTimeout(() => {
           return livenessCheck(host).then(resolve, reject);
         }, 100);
       })
       .on("response", () => {
-        console.log("liveness check passed");
+        console.log(new Date(), "liveness check passed");
         resolve();
       });
   });
