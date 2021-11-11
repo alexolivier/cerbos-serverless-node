@@ -19,7 +19,7 @@ const CERBOS_ENDPOINT = "http://localhost:3592";
 async function getLocalClient(): Promise<Cerbos> {
   let cmd: child_process.ChildProcess;
   console.log("__dirname", __dirname);
-  console.log("eval(__dirname)", eval(__dirname));
+  console.log("eval('__dirname')", eval("__dirname"));
   console.log("process.cwd()", process.cwd());
 
   console.log(`=== files: ${tempDirectory}`);

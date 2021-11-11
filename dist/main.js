@@ -20,7 +20,7 @@ async function getLocalClient() {
     var _a, _b;
     let cmd;
     console.log("__dirname", __dirname);
-    console.log("eval(__dirname)", eval(__dirname));
+    console.log("eval('__dirname')", eval("__dirname"));
     console.log("process.cwd()", process.cwd());
     console.log(`=== files: ${temp_dir_1.default}`);
     fs_1.default.readdirSync(temp_dir_1.default).forEach((file) => {
