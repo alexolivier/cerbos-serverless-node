@@ -1,23 +1,14 @@
 import path from "path";
-
 import { Cerbos } from "cerbos";
 import spawn from "cross-spawn";
-import { cerbosDir } from "./get-paths";
-import child_process from "child_process";
 import http from "http";
 import fs from "fs";
-import { promisify } from "util";
-import { createConfig } from "./create-config";
-import tempDirectory from "temp-dir";
 
-const readFile = promisify(fs.readFile);
-const writeFile = promisify(fs.writeFile);
-const chmod = promisify(fs.chmod);
+import tempDirectory from "temp-dir";
 
 const CERBOS_ENDPOINT = "http://localhost:3592";
 
 async function getLocalClient(): Promise<Cerbos> {
-  let cmd: child_process.ChildProcess;
   console.log("__dirname", __dirname);
   console.log("eval('__dirname')", eval("__dirname"));
   console.log("process.cwd()", process.cwd());
@@ -27,65 +18,28 @@ async function getLocalClient(): Promise<Cerbos> {
     console.log(file);
   });
 
-  console.log(`=== files: ../../`);
-  fs.readdirSync("../../").forEach((file) => {
+  console.log(`=== files: ${process.cwd()}/node_modules/.cerbos`);
+  fs.readdirSync(`${process.cwd()}/node_modules/.cerbos`).forEach((file) => {
     console.log(file);
   });
+
   console.log("===");
 
-  console.log(`=== files: ../../.cerbos`);
-  fs.readdirSync("../../.cerbos").forEach((file) => {
-    console.log(file);
-  });
-  console.log("===");
+  console.log(
+    "spwaning:",
+    [
+      `${process.cwd()}/node_modules/.cerbos/cerbos`,
+      "server",
+      "--config",
+      `${process.cwd()}/node_modules/.cerbos/config.yaml`,
+    ].join(" ")
+  );
 
-  if (eval("__dirname").startsWith("/snapshot/")) {
-    console.log(`moving to ${tempDirectory}`);
-
-    const data = await readFile("../../.cerbos/cerbos");
-    await writeFile(`${tempDirectory}/cerbos`, data);
-    await chmod(`${tempDirectory}/cerbos`, "755");
-
-    console.log("policy dir", path.join(process.cwd(), "./policies"));
-
-    await writeFile(
-      `${tempDirectory}/config.yaml`,
-      createConfig(path.join(process.cwd(), "./policies"))
-    );
-
-    console.log(`moved to ${tempDirectory}`);
-    console.log(
-      "spwaning:",
-      [
-        `${tempDirectory}/cerbos`,
-        "server",
-        "--config",
-        `${tempDirectory}/config.yaml}`,
-      ].join(" ")
-    );
-
-    cmd = spawn(
-      `${tempDirectory}/cerbos`,
-      ["server", "--config", `${tempDirectory}/config.yaml`],
-      {}
-    );
-  } else {
-    console.log(
-      "spwaning:",
-      [
-        "../../.cerbos/cerbos",
-        "server",
-        "--config",
-        path.join(cerbosDir(), "config.yaml"),
-      ].join(" ")
-    );
-
-    cmd = spawn(
-      "../../.cerbos/cerbos",
-      ["server", "--config", path.join(cerbosDir(), "config.yaml")],
-      {}
-    );
-  }
+  const cmd = spawn(
+    `${process.cwd()}/node_modules/.cerbos/cerbos`,
+    ["server", "--config", `${process.cwd()}/node_modules/.cerbos/config.yaml`],
+    {}
+  );
 
   cmd.stdout?.on("data", (data) => {
     console.log(`stdout: ${data}`);
@@ -123,8 +77,8 @@ async function livenessCheck(host: string): Promise<void> {
   });
 }
 
-path.join(__dirname, "../../../policies");
-path.join(__dirname, "../../.cerbos/cerbos");
-path.join(__dirname, "../../.cerbos/config.yaml");
+path.join(process.cwd(), "/policies");
+path.join(process.cwd(), "/node_modules/.cerbos/cerbos");
+path.join(process.cwd(), "/node_modules/.cerbos/config.yaml");
 
 export default getLocalClient;
