@@ -11,11 +11,15 @@ const CERBOS_ENDPOINT = "http://localhost:3592";
 async function getLocalClient(): Promise<Cerbos> {
   console.log(new Date(), "copying binary");
 
-  const binaryData = fs.readFileSync("./node_modules/.cerbos/cerbos");
+  const binaryData = fs.readFileSync(
+    `${process.cwd()}/node_modules/.cerbos/cerbos`
+  );
   fs.writeFileSync(`${tempDirectory}/cerbos`, binaryData);
   fs.chmodSync(`${tempDirectory}/cerbos`, "755");
 
-  const configData = fs.readFileSync("./node_modules/.cerbos/config.yaml");
+  const configData = fs.readFileSync(
+    `${process.cwd()}/node_modules/.cerbos/config.yaml`
+  );
   fs.writeFileSync(`${tempDirectory}/config.yaml`, configData);
 
   console.log(new Date(), "copying binary done");
