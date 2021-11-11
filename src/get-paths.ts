@@ -2,11 +2,11 @@ import path from "path";
 import tempDir from "temp-dir";
 
 export const cerbosDir = () => {
-  return path.join(__dirname, "../..", ".cerbos");
+  return path.join(__dirname, "../../.cerbos");
 };
 
 export const policyDir = () => {
-  return path.join(cerbosDir(), "../..", "policies");
+  return path.join(cerbosDir(), "../../policies");
 };
 
 export const lockFile = () => {

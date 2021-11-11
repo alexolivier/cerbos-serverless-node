@@ -4,20 +4,30 @@ import { Cerbos } from "cerbos";
 import spawn from "cross-spawn";
 import { cerbosDir } from "./get-paths";
 import http from "http";
-import tempDir from "temp-dir";
+// import tempDir from "temp-dir";
 
 const CERBOS_ENDPOINT = "http://localhost:3592";
 
 async function getLocalClient(): Promise<Cerbos> {
+  console.log(
+    "spwaning:",
+    [
+      "../../.cerbos/cerbos",
+      "server",
+      "--config",
+      path.join(cerbosDir(), "config.yaml"),
+    ].join(" ")
+  );
+
   const cmd = spawn(
-    process.env.NOW_REGION ? `${tempDir}/cerbos` : "../../.cerbos/cerbos",
-    ["server", "--config", path.resolve(cerbosDir(), "config.yaml")],
+    "../../.cerbos/cerbos",
+    ["server", "--config", path.join(cerbosDir(), "config.yaml")],
     {}
   );
 
-  // cmd.stdout?.on("data", (data) => {
-  //   console.log(`stdout: ${data}`);
-  // });
+  cmd.stdout?.on("data", (data) => {
+    console.log(`stdout: ${data}`);
+  });
 
   cmd.stderr?.on("data", (data) => {
     console.error(`stderr: ${data}`);
@@ -51,7 +61,7 @@ async function livenessCheck(host: string): Promise<void> {
   });
 }
 
-path.join(__dirname, "../../.cerbos/cerbos");
+path.join(__dirname, "../../../policies");
 path.join(__dirname, "../../.cerbos/config.yaml");
 
 export default getLocalClient;

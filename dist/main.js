@@ -8,15 +8,21 @@ const cerbos_1 = require("cerbos");
 const cross_spawn_1 = __importDefault(require("cross-spawn"));
 const get_paths_1 = require("./get-paths");
 const http_1 = __importDefault(require("http"));
-const temp_dir_1 = __importDefault(require("temp-dir"));
+// import tempDir from "temp-dir";
 const CERBOS_ENDPOINT = "http://localhost:3592";
 async function getLocalClient() {
-    var _a;
-    const cmd = (0, cross_spawn_1.default)(process.env.NOW_REGION ? `${temp_dir_1.default}/cerbos` : "../../.cerbos/cerbos", ["server", "--config", path_1.default.resolve((0, get_paths_1.cerbosDir)(), "config.yaml")], {});
-    // cmd.stdout?.on("data", (data) => {
-    //   console.log(`stdout: ${data}`);
-    // });
-    (_a = cmd.stderr) === null || _a === void 0 ? void 0 : _a.on("data", (data) => {
+    var _a, _b;
+    console.log("spwaning:", [
+        "../../.cerbos/cerbos",
+        "server",
+        "--config",
+        path_1.default.join((0, get_paths_1.cerbosDir)(), "config.yaml"),
+    ].join(" "));
+    const cmd = (0, cross_spawn_1.default)("../../.cerbos/cerbos", ["server", "--config", path_1.default.join((0, get_paths_1.cerbosDir)(), "config.yaml")], {});
+    (_a = cmd.stdout) === null || _a === void 0 ? void 0 : _a.on("data", (data) => {
+        console.log(`stdout: ${data}`);
+    });
+    (_b = cmd.stderr) === null || _b === void 0 ? void 0 : _b.on("data", (data) => {
         console.error(`stderr: ${data}`);
     });
     cmd.on("close", (code) => {
@@ -43,7 +49,7 @@ async function livenessCheck(host) {
         });
     });
 }
-path_1.default.join(__dirname, "../../.cerbos/cerbos");
+path_1.default.join(__dirname, "../../../policies");
 path_1.default.join(__dirname, "../../.cerbos/config.yaml");
 exports.default = getLocalClient;
 //# sourceMappingURL=main.js.map

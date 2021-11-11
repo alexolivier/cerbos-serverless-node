@@ -7,11 +7,11 @@ exports.getExecutablePath = exports.lockFile = exports.policyDir = exports.cerbo
 const path_1 = __importDefault(require("path"));
 const temp_dir_1 = __importDefault(require("temp-dir"));
 const cerbosDir = () => {
-    return path_1.default.join(__dirname, "../..", ".cerbos");
+    return path_1.default.join(__dirname, "../../.cerbos");
 };
 exports.cerbosDir = cerbosDir;
 const policyDir = () => {
-    return path_1.default.join((0, exports.cerbosDir)(), "../..", "policies");
+    return path_1.default.join((0, exports.cerbosDir)(), "../../policies");
 };
 exports.policyDir = policyDir;
 const lockFile = () => {
