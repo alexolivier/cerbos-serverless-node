@@ -21,15 +21,16 @@ async function getLocalClient(): Promise<Cerbos> {
 
   if (eval("__dirname").startsWith("/snapshot/")) {
     console.log(`moving to ${tempDirectory}`);
+
     const data = await readFile("../../.cerbos/cerbos");
     await writeFile(`${tempDirectory}/cerbos`, data);
     await chmod(`${tempDirectory}/cerbos`, "755");
 
-    console.log("policy dir ", path.join(process.cwd(), "../../../policies"));
+    console.log("policy dir", path.join(process.cwd(), "../../policies"));
 
     await writeFile(
       `${tempDirectory}/config.yaml`,
-      createConfig(path.join(process.cwd(), "../../../policies"))
+      createConfig(path.join(process.cwd(), "../../policies"))
     );
 
     console.log(`moved to ${tempDirectory}`);

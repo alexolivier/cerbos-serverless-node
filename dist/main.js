@@ -24,8 +24,8 @@ async function getLocalClient() {
         const data = await readFile("../../.cerbos/cerbos");
         await writeFile(`${temp_dir_1.default}/cerbos`, data);
         await chmod(`${temp_dir_1.default}/cerbos`, "755");
-        console.log("policy dir ", path_1.default.join(process.cwd(), "../../../policies"));
-        await writeFile(`${temp_dir_1.default}/config.yaml`, (0, create_config_1.createConfig)(path_1.default.join(process.cwd(), "../../../policies")));
+        console.log("policy dir", path_1.default.join(process.cwd(), "../../policies"));
+        await writeFile(`${temp_dir_1.default}/config.yaml`, (0, create_config_1.createConfig)(path_1.default.join(process.cwd(), "../../policies")));
         console.log(`moved to ${temp_dir_1.default}`);
         console.log("spwaning:", [
             `${temp_dir_1.default}/cerbos`,
