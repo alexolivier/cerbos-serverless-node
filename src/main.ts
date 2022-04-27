@@ -1,5 +1,5 @@
 import path from "path";
-import { Cerbos } from "cerbos";
+import { Cerbos } from "@cerbos/sdk";
 import spawn from "cross-spawn";
 import http from "http";
 
@@ -8,7 +8,10 @@ import tempDirectory from "temp-dir";
 
 const CERBOS_ENDPOINT = "http://localhost:3592";
 
+let _client: Cerbos | null = null;
+
 async function getLocalClient(): Promise<Cerbos> {
+  if (_client) return _client;
   console.log(new Date(), "copying binary");
 
   const binaryData = fs.readFileSync(
@@ -60,9 +63,10 @@ async function getLocalClient(): Promise<Cerbos> {
 
   await livenessCheck(`${CERBOS_ENDPOINT}/_cerbos/health`);
 
-  return new Cerbos({
+  _client = new Cerbos({
     hostname: CERBOS_ENDPOINT, // The Cerbos PDP instance
   });
+  return _client;
 }
 
 async function livenessCheck(host: string): Promise<void> {
